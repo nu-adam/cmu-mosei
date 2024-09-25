@@ -1,19 +1,34 @@
 import os
 from mmsdk import mmdatasdk
+from utils import helpers
 
-DEFAULT_PATH = '../cmumosei/'
+DEFAULT_PATH = '../cmumosei/default/'
+MODALITIES = {
+    'raw': mmdatasdk.cmu_mosei.raw,
+    'highlevel': mmdatasdk.cmu_mosei.highlevel,
+    'labels': mmdatasdk.cmu_mosei.labels
+}
+DEFAULT_SOURCES = [key for key in MODALITIES]
 
-def load_dataset(path, sources = ['raw', 'highlevel', 'labels']):
+# Download the dataset from scratch
+def download_dataset(directory, sources = DEFAULT_SOURCES):
+    helpers.ensure_directory(directory)
+    
+    cmumosei_dataset = {}
+    for s in sources:
+        cmumosei_dataset[s] = mmdatasdk.mmdataset(
+            MODALITIES[s], f'{directory}/{s}'
+        )
+    return cmumosei_dataset
+
+# Download an existing dataset
+def load_dataset(directory, sources = DEFAULT_SOURCES):
     # If the path directory does not exist, create it
-    if not os.path.exists(path):
-        print('The directory does not exist')
+    if not os.path.exists(directory):
+        print('This directory does not exist:', directory)
         return
 
     cmumosei_dataset = {}
     for s in sources:
-        cmumosei_dataset[s] = mmdatasdk.mmdataset(f'{path}/{s}')
+        cmumosei_dataset[s] = mmdatasdk.mmdataset(f'{directory}/{s}')
     return cmumosei_dataset
-
-if __name__ == '__main__':
-    # Loading the existing dataset from a directory
-    load_dataset(DEFAULT_PATH, ['raw', 'highlevel', 'labels'])
