@@ -1,6 +1,6 @@
 import os
 from mmsdk import mmdatasdk
-from utils import helpers
+from utils import helpers, dataset_operations as dsop
 
 DEFAULT_PATH = '../cmumosei/default/'
 MODALITIES = {
@@ -28,7 +28,20 @@ def load_dataset(directory, sources = DEFAULT_SOURCES):
         print('This directory does not exist:', directory)
         return
 
-    cmumosei_dataset = {}
+    cmumosei = {}
     for s in sources:
-        cmumosei_dataset[s] = mmdatasdk.mmdataset(f'{directory}/{s}')
-    return cmumosei_dataset
+        cmumosei[s] = mmdatasdk.mmdataset(f'{directory}/{s}')
+    return cmumosei
+
+def load_partial_dataset(directory, N, sources = DEFAULT_SOURCES):
+    cmumosei = load_dataset(directory, sources)
+    
+    for modality in cmumosei.keys():
+        cmumosei[modality] = dsop.retrieve_partial_dataset(
+            cmumosei[modality], N
+        )
+    return cmumosei
+    
+
+if __name__ == '__main__':
+    download_dataset(DEFAULT_PATH)

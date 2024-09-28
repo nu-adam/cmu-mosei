@@ -1,17 +1,19 @@
-import json
 from pprint import pprint
-from utils import helpers
 
-def retrieve_partial_sequence(comp_sequence, N = 50):
-    all_video_ids = list(comp_sequence.data.keys())
-    selected_video_ids = all_video_ids[:N]
-    partial_dataset = {vid: comp_sequence.data[vid] for vid in selected_video_ids}
+def retrieve_partial_dataset(dataset, N = 50):
+    seq_ids = list(dataset.keys())
+    # All sequences are assumed to have the same set of video IDs
+    all_video_ids = list(dataset[seq_ids[0]].keys())
+    if N > len(all_video_ids):
+        raise ValueError(f'N has to be no more than {len(all_video_ids)}')
     
-    return partial_dataset
+    # We need only first N amount of videos
+    # So we get rid of the rest
+    for vid in all_video_ids[N:]:
+        dataset.remove_id(vid)
+    return dataset
 
-def sequence_to_json_file(comp_sequence, filepath = 'sequence.json'):
-    helpers.ensure_directory(filepath)
-    
+def hdf5_sequence_to_dictionary(comp_sequence):
     sequence_obj = {}
     for vid in comp_sequence.keys():
         video_obj = {
@@ -24,6 +26,5 @@ def sequence_to_json_file(comp_sequence, filepath = 'sequence.json'):
             for row in comp_sequence[vid][member]:
                 video_obj[member].append(row.tolist())
         sequence_obj[vid] = video_obj
-
-    with open(filepath, 'w') as f:
-        json.dump(sequence_obj, f, indent=4)
+    
+    return sequence_obj
