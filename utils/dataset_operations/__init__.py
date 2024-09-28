@@ -1,15 +1,25 @@
-from pprint import pprint
+from . import text
 
-def retrieve_partial_dataset(dataset, N = 50):
+from utils import helpers
+
+def retrieve_partial_dataset(dataset, N = 50, random = False):
     seq_ids = list(dataset.keys())
     # All sequences are assumed to have the same set of video IDs
     all_video_ids = list(dataset[seq_ids[0]].keys())
     if N > len(all_video_ids):
         raise ValueError(f'N has to be no more than {len(all_video_ids)}')
     
-    # We need only first N amount of videos
+    # We need only N amount of videos
     # So we get rid of the rest
-    for vid in all_video_ids[N:]:
+    to_remove = []
+    if random:
+        # Identifying which videos to remove
+        to_remove = helpers.delete_rand_items(all_video_ids, N)
+    else:
+        # To remove everything except the first N amount
+        to_remove = all_video_ids[N:]
+    
+    for vid in to_remove:
         dataset.remove_id(vid)
     return dataset
 

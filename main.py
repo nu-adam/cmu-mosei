@@ -1,5 +1,5 @@
 from scripts import loader
-from utils import dataset_operations as dsop, helpers
+from utils import printers, dataset_operations as dsop
 
 if __name__ == '__main__':
     '''
@@ -13,8 +13,9 @@ if __name__ == '__main__':
 
     cmumosei = loader.load_partial_dataset(
         'cmumosei/default/',
-        50, # only first 50 videos are loaded (max possible is 3293)
-        ['highlevel', 'labels']
+        50, # first 50 videos are loaded (max possible is 3293)
+        ['raw', 'highlevel', 'labels']
     )
-    cmumosei_highlevel = cmumosei['highlevel']
-    
+    words = cmumosei['raw']['words']
+    print(dsop.text.raw_words_features_to_string(words['--qXJuDtHPw']['features']))
+    # printers.pretty_print_hdf5_group(words['--qXJuDtHPw'])    

@@ -35,7 +35,7 @@ def load_dataset(directory, sources = DEFAULT_SOURCES):
 
 def load_partial_dataset(directory, N, sources = DEFAULT_SOURCES):
     cmumosei = load_dataset(directory, sources)
-    
+
     for modality in cmumosei.keys():
         cmumosei[modality] = dsop.retrieve_partial_dataset(
             cmumosei[modality], N
