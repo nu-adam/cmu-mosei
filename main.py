@@ -1,5 +1,6 @@
 from scripts import loader
 from utils import printers, dataset_operations as dsop
+from pprint import pprint
 
 if __name__ == '__main__':
     '''
@@ -17,5 +18,6 @@ if __name__ == '__main__':
         ['raw', 'highlevel', 'labels']
     )
     words = cmumosei['raw']['words']
-    print(dsop.text.raw_words_features_to_string(words['--qXJuDtHPw']['features']))
-    # printers.pretty_print_hdf5_group(words['--qXJuDtHPw'])    
+    keys = list(words.keys())
+    intervaled_sentences = dsop.text.raw_words_to_intervaled_sentences(words[keys[2]])
+    pprint(intervaled_sentences)
