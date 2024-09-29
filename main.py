@@ -1,4 +1,4 @@
-from scripts import loader
+from scripts import loader, syncer
 from utils import printers, dataset_operations as dsop
 from pprint import pprint
 
@@ -14,10 +14,12 @@ if __name__ == '__main__':
 
     cmumosei = loader.load_partial_dataset(
         'cmumosei/default/',
-        50, # first 50 videos are loaded (max possible is 3293)
+        5, # first 50 videos are loaded (max possible is 3293)
         ['raw', 'highlevel', 'labels']
     )
     words = cmumosei['raw']['words']
     keys = list(words.keys())
     intervaled_sentences = dsop.text.raw_words_to_intervaled_sentences(words[keys[2]])
-    pprint(intervaled_sentences)
+    pprint(intervaled_sentences['intervals'])
+    labels = dsop.comp_sequence_to_dictionary(cmumosei['labels']['All Labels'])
+    pprint(labels[keys[2]]['intervals'])

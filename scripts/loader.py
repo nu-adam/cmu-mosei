@@ -42,6 +42,11 @@ def load_partial_dataset(directory, N, sources = DEFAULT_SOURCES):
         )
     return cmumosei
     
+def deploy_dataset_modality(in_dataset, destination):
+    helpers.ensure_directory(destination)
+    
+    deploy_files = {x:x for x in in_dataset.keys()}
+    in_dataset.deploy(destination, deploy_files)
 
 if __name__ == '__main__':
     download_dataset(DEFAULT_PATH)

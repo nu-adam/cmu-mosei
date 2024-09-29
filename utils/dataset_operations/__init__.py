@@ -23,7 +23,7 @@ def retrieve_partial_dataset(dataset, N = 50, random = False):
         dataset.remove_id(vid)
     return dataset
 
-def hdf5_sequence_to_dictionary(comp_sequence):
+def comp_sequence_to_dictionary(comp_sequence):
     sequence_obj = {}
     for vid in comp_sequence.keys():
         video_obj = {
