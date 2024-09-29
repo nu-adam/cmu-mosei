@@ -93,7 +93,6 @@ ENV/
 # --------------------------------------
 # Django
 local_settings.py
-mmsdk/
 
 # Flask
 instance/

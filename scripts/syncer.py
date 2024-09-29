@@ -23,8 +23,7 @@ def sync_sentences_with_labels(intervaled_sentences, emotion_labels):
         
         # Check against each emotion label interval
         for emotion_idx, emotion_interval in enumerate(emotion_labels['intervals']):
-            emotion_start, emotion_end = emotion_interval
-            overlap_duration = get_overlap((sentence_start, sentence_end), (emotion_start, emotion_end))
+            overlap_duration = get_overlap(sentence_interval, emotion_interval)
             
             if overlap_duration > 0:
                 # There is an overlap, calculate the overlap ratio
@@ -97,7 +96,7 @@ def default_sync(cmumosei):
     for modality in cmumosei.keys():
         for seq in cmumosei[modality].keys():
             vids = [vid for vid in cmumosei[modality][seq].keys()]
-            print(modality, seq, len(vids))
+            print(modality, seq, vids)
     print('----------------------------------------------------------------')
     
     return
