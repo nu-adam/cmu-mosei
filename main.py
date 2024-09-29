@@ -20,6 +20,8 @@ if __name__ == '__main__':
     words = cmumosei['raw']['words']
     keys = list(words.keys())
     intervaled_sentences = dsop.text.raw_words_to_intervaled_sentences(words[keys[2]])
-    pprint(intervaled_sentences['intervals'])
+    # pprint(intervaled_sentences['intervals'])
     labels = dsop.comp_sequence_to_dictionary(cmumosei['labels']['All Labels'])
-    pprint(labels[keys[2]]['intervals'])
+    # pprint(labels[keys[2]]['intervals'])
+    labeled_sentences = syncer.sync_sentences_with_labels(intervaled_sentences, labels[keys[2]])
+    pprint(labeled_sentences)
